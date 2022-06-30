@@ -1,0 +1,8 @@
+site_name: 'Docs for service 2'
+
+nav:
+  - Home: index.md
+
+plugins:
+  - techdocs-core
+  
