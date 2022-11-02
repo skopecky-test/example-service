@@ -45,7 +45,7 @@ runs:
         curl -X POST \
           -H "Accept: application/vnd.github+json" \
           -H "Authorization: token ${{ inputs.token }}" \
-          https://api.github.com/repos/operate-first/service-catalog/dispatches \
+          https://api.github.com/repos/skopecky-test/techdocs-test/dispatches \
           -d '{"event_type":"docs-update","client_payload":{
             "docs_path":"${{ inputs.docs_path }}",
             "repository":"${{ inputs.repository }}",

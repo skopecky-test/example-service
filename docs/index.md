@@ -12,19 +12,6 @@ Testing
 
 Test 123a
 
-
-
-testing
-a
-a
-a
-a
-a
-a
-a
-a
-
-
 ```kroki-mermaid
 sequenceDiagram
 GitLab->>Kroki: Request rendering
