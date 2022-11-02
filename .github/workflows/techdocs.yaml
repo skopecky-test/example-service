@@ -14,15 +14,6 @@ jobs:
   send-repo-dispatches:
     runs-on: ubuntu-latest
     steps:
-      - name: Send dispatch for service2
-        uses: skopecky-test/service1/.github/actions/docs-dispatch@main
-        with:
-          filter: 'service2/**'
-          docs_path: 'service2'
-          entity_name: 'service2'
-          entity_kind: 'Component'
-          repository: ${{ github.repository }}
-          token: ${{ secrets.TOKEN }}
       - name: Send dispatch for service1
         uses: skopecky-test/service1/.github/actions/docs-dispatch@main
         with:

@@ -20,14 +20,14 @@ inputs:
   token:
     required: true
     description: 'GitHub token that requires metadata:read and contents:read&write permissions to target repository'
-  
+
 runs:
   using: 'composite'
   steps:
     - uses: actions/checkout@v2
       with:
         repository: ${{ inputs.repository }}
-      
+
     - uses: dorny/paths-filter@v2
       id: changes
       with:
@@ -41,31 +41,16 @@ runs:
 
     - name: Send dispatch for root docs
       if: (steps.changes.outputs.root_docs == 'true' && inputs.docs_path == '.') || steps.changes.outputs.docs == 'true'
-      uses: peter-evans/repository-dispatch@v2
-      with: 
-        token: '${{ inputs.token }}'
-        # Change to operate-first/service-catalog
-        repository: skopecky-test/techdocs-test
-        event-type: docs-udpate
-        client-payload: '{"ref": "${{ github.ref }}", "sha": "${{ github.sha }}"}'
-          # '{
-          #   "docs_path":"${{ inputs.docs_path }}",
-          #   "repository":"${{ inputs.repository }}",
-          #   "entity_name":"${{ inputs.entity_name }}",
-          #   "entity_kind":"${{ inputs.entity_kind }}",
-          #   "entity_namespace":"${{ inputs.entity_namespace }}"
-          # }'
-          
-      # run: | 
-      #   curl -X POST \
-      #     -H "Accept: application/vnd.github+json" \
-      #     -H "Authorization: token ${{ inputs.token }}" \
-      #     https://api.github.com/repos/skopecky-test/techdocs-test/dispatches \
-      #     -d '{"event_type":"docs-update","client_payload":{
-      #       "docs_path":"${{ inputs.docs_path }}",
-      #       "repository":"${{ inputs.repository }}",
-      #       "entity_name":"${{ inputs.entity_name }}",
-      #       "entity_kind":"${{ inputs.entity_kind }}",
-      #       "entity_namespace":"${{ inputs.entity_namespace }}"
-      #     }}'
-      # shell: bash
+      run: |
+        curl -X POST \
+          -H "Accept: application/vnd.github+json" \
+          -H "Authorization: token ${{ inputs.token }}" \
+          https://api.github.com/repos/operate-first/service-catalog/dispatches \
+          -d '{"event_type":"docs-update","client_payload":{
+            "docs_path":"${{ inputs.docs_path }}",
+            "repository":"${{ inputs.repository }}",
+            "entity_name":"${{ inputs.entity_name }}",
+            "entity_kind":"${{ inputs.entity_kind }}",
+            "entity_namespace":"${{ inputs.entity_namespace }}"
+          }}'
+      shell: bash
