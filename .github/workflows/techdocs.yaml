@@ -21,6 +21,14 @@ jobs:
     outputs:
       backstage-bump: ${{ steps.changes.outputs.backstage-bump }}
 
+  test:
+    needs: ["is-backstage-updated"]
+    runs-on: ubuntu-latest
+    steps:
+      - name: test
+        run: |
+          echo ${{ needs.is-backstage-updated.outpus.backstage-bump }}
+
   push-backstage-version-as-tag:
     needs: ["is-backstage-updated"]
     if: ${{ needs.is-backstage-updated.outpus.backstage-bump }} == 'true'
@@ -39,4 +47,3 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           custom_tag: ${{ steps.backstage-version.outputs.VERSION }}
-
