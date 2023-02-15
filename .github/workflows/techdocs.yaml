@@ -8,6 +8,8 @@ on:
 jobs:
   is-backstage-updated:
     runs-on: ubuntu-latest
+    outputs:
+      backstage-bump: ${{ steps.changes.outputs.backstage-bump }}
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -18,8 +20,6 @@ jobs:
           filters: |
             backstage-bump:
               - 'backstage.json'
-    outputs:
-      backstage-bump: ${{ steps.changes.outputs.backstage-bump }}
 
   test:
     needs: ["is-backstage-updated"]
@@ -31,7 +31,7 @@ jobs:
 
   push-backstage-version-as-tag:
     needs: ["is-backstage-updated"]
-    if: needs.is-backstage-updated.outpus.backstage-bump == 'true'
+    if: ${{ needs.is-backstage-updated.outpus.backstage-bump }} == 'true'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
