@@ -1,29 +1,15 @@
-name: Send dispatch to publisher
+name: Push
 
 on:
   push:
     branches:
       - main
+    paths:
+      - "backstage.json"
 
 jobs:
-  is-backstage-updated:
-    runs-on: ubuntu-latest
-    outputs:
-      backstage-bump: ${{ steps.changes.outputs.backstage-bump }}
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-
-      - uses: dorny/paths-filter@v2
-        id: changes
-        with:
-          filters: |
-            backstage-bump:
-              - 'backstage.json'
-
   push-backstage-version-as-tag:
     needs: ["is-backstage-updated"]
-    if: needs.is-backstage-updated.outputs.backstage-bump == 'true'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
