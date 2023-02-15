@@ -2,24 +2,21 @@ name: Send dispatch to publisher
 
 on:
   push:
-    branches: 
+    branches:
       - main
-      - master
-    paths:
-      - "**/docs/**"
-      - "mkdocs.yaml"
-      - "mkdocs.yml"
 
 jobs:
-  send-repo-dispatches:
+  tag-from-backstage:
     runs-on: ubuntu-latest
     steps:
-      - name: Send dispatch for service1
-        uses: skopecky-test/service1/.github/actions/docs-dispatch@main
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Get backstage version
+        id: backstage-version
+        run: |
+          echo "VERSION=$(jq '.version' backstage.json)" >> $GITHUB_OUTPUT
+      - name: GitHub Actions Create Tag
+        uses: laputansoft/github-tag-action@v4.6
         with:
-          docs_path: '.'
-          entity_name: 'service1'
-          entity_kind: 'Component'
-          repository: ${{ github.repository }}
-          token: ${{ secrets.TOKEN }}
-        
+          github_token: ${{ github.token }}
+          tag: ${{ steps.backstage-version.outputs.VERSION }}
