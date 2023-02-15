@@ -21,17 +21,9 @@ jobs:
             backstage-bump:
               - 'backstage.json'
 
-  test:
-    needs: ["is-backstage-updated"]
-    runs-on: ubuntu-latest
-    steps:
-      - name: test
-        run: |
-          echo ${{ needs.is-backstage-updated.outpus.backstage-bump }}
-
   push-backstage-version-as-tag:
     needs: ["is-backstage-updated"]
-    if: ${{ needs.is-backstage-updated.outpus.backstage-bump }} == 'true'
+    if: needs.is-backstage-updated.outpus.backstage-bump == true
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
