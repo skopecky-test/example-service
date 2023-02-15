@@ -23,7 +23,7 @@ jobs:
 
   push-backstage-version-as-tag:
     needs: ["is-backstage-updated"]
-    if: needs.is-backstage-updated.outpus.backstage-bump == true
+    if: needs.is-backstage-updated.outpus.backstage-bump != ''
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
