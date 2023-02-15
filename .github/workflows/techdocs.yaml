@@ -27,7 +27,7 @@ jobs:
     steps:
       - name: test
         run: |
-          echo ${{ needs.is-backstage-updated.outpus.backstage-bump }}
+          echo a${{ needs.is-backstage-updated.outpus.backstage-bump }}a
 
   push-backstage-version-as-tag:
     needs: ["is-backstage-updated"]
