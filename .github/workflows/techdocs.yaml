@@ -21,14 +21,6 @@ jobs:
             backstage-bump:
               - 'backstage.json'
 
-  test:
-    needs: ["is-backstage-updated"]
-    runs-on: ubuntu-latest
-    steps:
-      - name: test
-        run: |
-          echo a${{ needs.is-backstage-updated.outputs.backstage-bump }}a
-
   push-backstage-version-as-tag:
     needs: ["is-backstage-updated"]
     if: needs.is-backstage-updated.outputs.backstage-bump == 'true'
@@ -45,5 +37,5 @@ jobs:
       - name: Push tag
         uses: mathieudutour/github-tag-action@v6.1
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+          github_token: ${{ github.token }}
           custom_tag: ${{ steps.backstage-version.outputs.VERSION }}
