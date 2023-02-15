@@ -14,7 +14,7 @@ jobs:
       - name: Get backstage version
         id: backstage-version
         run: |
-          echo "VERSION=$(jq '.version' backstage.json)" >> $GITHUB_OUTPUT
+          echo "VERSION=v$(jq '.version' backstage.json | sed  s/\"//g)" >> $GITHUB_OUTPUT
       - name: GitHub Actions Create Tag
         uses: laputansoft/github-tag-action@v4.6
         with:
