@@ -9,7 +9,6 @@ on:
 
 jobs:
   push-backstage-version-as-tag:
-    needs: ["is-backstage-updated"]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
