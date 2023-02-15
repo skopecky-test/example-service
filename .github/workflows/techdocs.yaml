@@ -6,7 +6,7 @@ on:
       - main
 
 jobs:
-  push-backstage-version-as-tag:
+  is-backstage-updated:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -18,15 +18,23 @@ jobs:
           filters: |
             backstage-bump:
               - 'backstage.json'
+    outputs:
+      backstage-updated: ${{ steps.changes.outputs.backstage-bump }}
+
+  push-backstage-version-as-tag:
+    needs: ["is-backstage-updated"]
+    if: needs.is-backstage-updated.outpus.backstage-updated == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
 
       - name: Get backstage version
-        if: steps.changes.outputs.backstage-bump == 'true'
         id: backstage-version
         run: |
           echo "VERSION=$(jq '.version' backstage.json | sed  s/\"//g)" >> $GITHUB_OUTPUT
 
       - name: Push tag
-        if: steps.changes.outputs.backstage-bump == 'true'
         uses: mathieudutour/github-tag-action@v6.1
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
