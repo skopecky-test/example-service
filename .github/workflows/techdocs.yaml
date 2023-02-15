@@ -27,11 +27,11 @@ jobs:
     steps:
       - name: test
         run: |
-          echo a${{ needs.is-backstage-updated.outpus.backstage-bump }}a
+          echo a${{ needs.is-backstage-updated.outputs.backstage-bump }}a
 
   push-backstage-version-as-tag:
     needs: ["is-backstage-updated"]
-    if: needs.is-backstage-updated.outpus.backstage-bump == 'true'
+    if: needs.is-backstage-updated.outputs.backstage-bump == 'true'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
